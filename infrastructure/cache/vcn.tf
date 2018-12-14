@@ -18,10 +18,12 @@ resource "oci_core_security_list" "cache_sl" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id = "${var.vcn_ocid}"
   egress_security_rules = [
-    { stateless="true" destination="${data.oci_core_vcns.parent_vcn.virtual_networks.0.cidr_block}" protocol="all" }
+    { stateless="true" destination="${data.oci_core_vcns.parent_vcn.virtual_networks.0.cidr_block}" protocol="all" },
+    { stateless="false" destination="0.0.0.0/0" protocol="all" }
   ]
   ingress_security_rules = [
-    { stateless="true" source="${data.oci_core_vcns.parent_vcn.virtual_networks.0.cidr_block}" protocol="all" }
+    { stateless="true" source="${data.oci_core_vcns.parent_vcn.virtual_networks.0.cidr_block}" protocol="6" tcp_options { min=22 max=22 } },
+    { stateless="true" source="${data.oci_core_vcns.parent_vcn.virtual_networks.0.cidr_block}" protocol="6" tcp_options { min=11211 max=11211 } }
   ]
   display_name = "cache-sl"
 }
