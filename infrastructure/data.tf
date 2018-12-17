@@ -14,4 +14,4 @@ data "oci_core_images" "oracle_linux_image" {
 locals  {
   oracle_linux_image_ocid = "${data.oci_core_images.oracle_linux_image.images.0.id}"
 }
-output "oracle_linux_image_ocid_output" { value = "${local.oracle_linux_image_ocid}" }
+#output "oracle_linux_image_ocid_output" { value = "${local.oracle_linux_image_ocid}" }

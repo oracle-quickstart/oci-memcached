@@ -9,7 +9,6 @@ module "cache" {
   compute_image_ocid = "${local.oracle_linux_image_ocid}"
   instance_pool_size = 2
 }
-output "memcached_ips" { value = "${module.cache.memcached_ips}" }
 
 module "bastion" {
   source = "bastion"
