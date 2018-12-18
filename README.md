@@ -68,7 +68,10 @@ It will take a few minutes to boot and initialize your compute instances. At the
 Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
 Outputs:
 Bastion public IP = 130.61.122.2
-Memcached private IPs = 10.1.10.2
+Memcached private IPs = [
+    10.1.10.2,
+    10.1.11.2
+]
 ```
 Connect your bastion host and smoke test both memcached servers:
 ```shell
@@ -111,3 +114,5 @@ You can reuse the existing module output:
 ```
 output "Memcached private IPs" { value = "${module.cache.memcached_ips}" }
 ```
+
+![](docs/instance-pool-screen.png)
