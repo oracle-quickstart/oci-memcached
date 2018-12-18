@@ -68,7 +68,10 @@ It will take a few minutes to boot and initialize your compute instances. At the
 Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
 Outputs:
 Bastion public IP = 130.61.122.2
-Memcached private IPs = 10.1.10.2
+Memcached private IPs = [
+    10.1.10.2,
+    10.1.11.2
+]
 ```
 Connect your bastion host and smoke test both memcached servers:
 ```shell
@@ -111,3 +114,9 @@ You can reuse the existing module output:
 ```
 output "Memcached private IPs" { value = "${module.cache.memcached_ips}" }
 ```
+### Known Issues
+Because of Terraform 0.11.x missing functionality (no proper null check possible for data source in interpolation) you need to remove Memcached private IPs output form the script, <span style="color:red">if you want to scale up or scale down the size of an existing pool using this module</span>. The ultimate code fix will be provided as soon as Terraform 0.12 is GA.
+
+This concludes the README. Enjoy your setup:
+
+![](docs/instance-pool-screen.png)
