@@ -1,38 +1,20 @@
-# oci-memcached
+# oci-quickstart-memcached
 Terraform module to deploy Memcached on Oracle Cloud Infrastructure (OCI)
-# Memcached
+
+## Memcached
 Memcached is a simple in-memory key-value store for small data chunks. It can be used as an LRU-based cache for pre-serialized data. The responsibility is split between client and server. Server can store and fetch data. You can add more servers to increase the total memory, however, there is neither replication nor synchronizations between servers. Clients have to use a key-based hashing algorithm of their choice to know on which server the particular data are.
 
 You can find more info here: https://memcached.org/
 
-# Oracle Cloud Infrastructure Resources
+## Oracle Cloud Infrastructure Resources
 This repository contains three sets of Terraform artifacts:
 
-* `infrastructure/*.tf`
-
-   This is a <span style="color:brown">sample root-level project</span> that shows how to use bastion- and memcached- modules. You can use it to quickly provision the entire, working setup to test the infrastructure. In most cases, however, you will just copy the required `module` section from the `infrastructure/modules.tf` file and set the module input variables using your project values.
-
-   The files in this folder will provision a **VCN** and an **Internet Gateway** cloud resources. Furthermore, they will provision all resources included in **bastion-host module** and **memcached module** as described below.
-
-* `infrastructure/bastion/*.tf`
-
-  This is a <span style="color:brown">bastion-host module</span> that runs a single instance in a public subnet. The Compute instance can be used as a bastion host to allow ingress traffic to private subnets of the same VCN.
-
-  The files in this folder will provision a **Route Table**, a **Security List**, one **Subnet** and a **Compute instance**, all dedicated to Bastion Host.
-
-  You can use this module in your project. Apart from the module folder, copy the required `module "bastion"` section from the `infrastructure/modules.tf` file and set the module input variables (VCN OCID, Internet Gateway OCID, Subnet CIDR and Compute Image OCID) using your project values.
-
-* `infrastructure/cache/*.tf`
-
-  This is <span style="color:brown">memcached module</span> that runs an instance pool of Memcached Compute instances in two, newly created private subnets spread across two availability domains. The instances will use newly provisioned NAT Gateway to be able to download and install memcached software.
-
-  The files in this folder will provision a **NAT Gateway**, a **Route Table**, a **Security List**, two **Subnet**, an **Instance Configuration** and an **Instance Pool** cloud resources, all dedicated to Memcached Instance Pool.
-
-  You can use this module in your project. Apart from the module folder, copy the required `module "cache"` section from the `infrastructure/modules.tf` file and set the module input variables (VCN OCID, Subnet CIDRs, Compute Image OCID and expected number of instances in the pool) using your project values.
+* `infrastructure/*.tf` - This is a <span style="color:brown">sample root-level project</span> that shows how to use bastion- and memcached- modules. You can use it to quickly provision the entire, working setup to test the infrastructure. In most cases, however, you will just copy the required `module` section from the `infrastructure/modules.tf` file and set the module input variables using your project values.  The files in this folder will provision a **VCN** and an **Internet Gateway** cloud resources. Furthermore, they will provision all resources included in **bastion-host module** and **memcached module** as described below.
+* `infrastructure/bastion/*.tf` - This is a <span style="color:brown">bastion-host module</span> that runs a single instance in a public subnet. The Compute instance can be used as a bastion host to allow ingress traffic to private subnets of the same VCN.  The files in this folder will provision a **Route Table**, a **Security List**, one **Subnet** and a **Compute instance**, all dedicated to Bastion Host.  You can use this module in your project. Apart from the module folder, copy the required `module "bastion"` section from the `infrastructure/modules.tf` file and set the module input variables (VCN OCID, Internet Gateway OCID, Subnet CIDR and Compute Image OCID) using your project values.
+* `infrastructure/cache/*.tf` - This is <span style="color:brown">memcached module</span> that runs an instance pool of Memcached Compute instances in two, newly created private subnets spread across two availability domains. The instances will use newly provisioned NAT Gateway to be able to download and install memcached software.  The files in this folder will provision a **NAT Gateway**, a **Route Table**, a **Security List**, two **Subnet**, an **Instance Configuration** and an **Instance Pool** cloud resources, all dedicated to Memcached Instance Pool.  You can use this module in your project. Apart from the module folder, copy the required `module "cache"` section from the `infrastructure/modules.tf` file and set the module input variables (VCN OCID, Subnet CIDRs, Compute Image OCID and expected number of instances in the pool) using your project values.
 
 ![](docs/architecture.oci.png)
 
-# How to use it
 ## Prerequisites
 Make sure you've completed the actions listed below:
 1. Own an **Oracle Cloud account**. You can use a new trial account (see [here](https://cloudcomputingrecipes.com/2018/10/08/oci-1-cloud-account/) for more details)
@@ -94,7 +76,6 @@ Iliad
 END
 ```
 
-
 ## Option 2: Use Memcached module as a part of your infrastructure
 This repository contains a standalone <span style="color:brown">memcached module</span> you can incorporate into your existing Terraform-based infrastructure in Oracle Cloud.
 
@@ -114,7 +95,7 @@ You can reuse the existing module output:
 ```
 output "Memcached private IPs" { value = "${module.cache.memcached_ips}" }
 ```
-### Known Issues
+## Known Issues
 Because of Terraform 0.11.x missing functionality (no proper null check possible for data source in interpolation) you need to remove Memcached private IPs output form the script, <span style="color:red">if you want to scale up or scale down the size of an existing pool using this module</span>. The ultimate code fix will be provided as soon as Terraform 0.12 is GA.
 
 This concludes the README. Enjoy your setup:
